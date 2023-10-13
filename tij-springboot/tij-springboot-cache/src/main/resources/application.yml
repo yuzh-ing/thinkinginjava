@@ -1,0 +1,15 @@
+spring:
+  profiles:
+    active: dev
+  redis:
+    host: 192.168.9.114
+    port: 6379
+    password: 123456
+    database: 0
+
+tij:
+  datasource:
+    vm:
+      url: jdbc:mysql://192.168.9.114:3306/tij?allowPublicKeyRetrieval=true&useUnicode=yes&characterEncoding=utf-8&useSSL=no&serverTimezone=Asia/Shanghai
+      username: root
+      password: 123456
