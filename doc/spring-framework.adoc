@@ -1,0 +1,110 @@
+:stem: latexmath
+:icons: font
+:source-highlighter: coderay
+:sectnums:
+:sectlinks:
+:sectnumlevels: 4
+:toc: left
+:toc-title: 目录
+:toclevels: 3
+
+[NOTE]
+====
+spring-framework.version=5.3.30
+====
+
+== 模块概览
+
+=== 核心模块
+
+[plantuml,spring-framework-overview-core.png]
+--
+@startwbs
++ spring-framework
+++ spring-core
++++ spring-jcl
+++ spring-aop
++++ spring-beans
++++ spring-core
+++ spring-beans
++++ spring-core
+++ spring-context
++++ spring-core
++++ spring-aop
++++ spring-beans
++++ spring-expression
++++ spring-tx
+++ spring-oxm
++++ spring-core
++++ spring-beans
+@endwbs
+--
+
+=== 数据模块
+
+[plantuml,spring-framework-overview-dataaccess.png]
+--
+@startwbs
++ spring-framework
+++ spring-tx
++++ spring-core
++++ spring-beans
+++ spring-jdbc
++++ spring-core
++++ spring-beans
+
+@endwbs
+--
+
+=== web模块
+
+[plantuml,spring-framework-overview-web.png]
+--
+@startwbs
++ spring-framework
+++ spring-web
++++ spring-core
++++ spring-beans
+++ spring-webmvc
++++ spring-core
++++ spring-beans
++++ spring-context
++++ spring-aop
++++ spring-expression
++++ spring-web
+@endwbs
+--
+
+=== 其他模板
+
+[plantuml,spring-framework-overview-other.png]
+--
+@startwbs
++ spring-framework
+++ spring-expression
++++ spring-core
+@endwbs
+--
+
+== spring-expression
+
+=== 类图
+
+[plantuml,spring-framework-overview-other.png]
+--
+@startuml
+interface ExpressionParser {
+    Expression parseExpression(String expressionString, ParserContext context)
+}
+class SpelExpressionParser {
+}
+
+interface EvaluationContext {
+    
+}
+class StandardEvaluationContext {
+}
+
+ExpressionParser <|.. SpelExpressionParser
+@enduml
+--
