@@ -90,7 +90,7 @@ spring-framework.version=5.3.30
 
 === 类图
 
-[plantuml,spring-framework-overview-other.png]
+[plantuml,spring-framework-expression.png]
 --
 @startuml
 interface ExpressionParser {
@@ -108,3 +108,44 @@ class StandardEvaluationContext {
 ExpressionParser <|.. SpelExpressionParser
 @enduml
 --
+
+== spring-core
+
+=== ResolvableType
+
+==== 基础
+
+[plantuml,java-type.png]
+--
+@startuml
+interface Type {
+}
+interface ParameterizedType {
+    Type[] getActualTypeArguments();
+    Type getRawType();
+    Type getOwnerType();
+}
+interface GenericArrayType {
+    Type getGenericComponentType();
+}
+interface WildcardType {
+    Type[] getUpperBounds();
+    Type[] getLowerBounds();
+}
+
+Type <|-- ParameterizedType
+Type <|-- GenericArrayType
+Type <|-- WildcardType
+@enduml
+--
+
+==== 类图
+
+[plantuml,spring-framework-core-resolvabletype.png]
+--
+@startuml
+class ResolvableType {
+}
+@enduml
+--
+
