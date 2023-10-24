@@ -120,22 +120,34 @@ ExpressionParser <|.. SpelExpressionParser
 @startuml
 interface Type {
 }
+class Class<T> {
+}
+interface GenericArrayType {
+    Type getGenericComponentType();
+}
 interface ParameterizedType {
     Type[] getActualTypeArguments();
     Type getRawType();
     Type getOwnerType();
 }
-interface GenericArrayType {
-    Type getGenericComponentType();
+interface TypeVariable {
+    Type[] getBounds();
+    D getGenericDeclaration();
+    String getName();
+    AnnotatedType[] getAnnotatedBounds();
 }
 interface WildcardType {
     Type[] getUpperBounds();
     Type[] getLowerBounds();
 }
 
-Type <|-- ParameterizedType
+
 Type <|-- GenericArrayType
+Type <|-- ParameterizedType
+Type <|-- TypeVariable
 Type <|-- WildcardType
+
+Type <|.. Class
 @enduml
 --
 
