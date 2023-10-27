@@ -88,30 +88,143 @@ spring-framework.version=5.3.30
 
 == spring-expression
 
-=== 类图
+=== Spel
 
-[plantuml,spring-framework-expression.png]
+==== 上下文
+
+[plantuml,spring-framework-expression-context.png]
+--
+@startuml
+interface EvaluationContext {
+    Object lookupVariable(String name)
+    
+    List<PropertyAccessor> getPropertyAccessors();
+}
+class StandardEvaluationContext {
+
+}
+
+EvaluationContext <|.. StandardEvaluationContext
+@enduml
+--
+
+==== 解析表达式
+
+===== 核心类图
+
+[plantuml,spring-framework-expression-parse.png]
 --
 @startuml
 interface ExpressionParser {
     Expression parseExpression(String expressionString, ParserContext context)
 }
+class TemplateAwareExpressionParser {
+    SpelExpression doParseExpression(String expressionString, ParserContext context)
+}
+class InternalSpelExpressionParser {
+
+}
 class SpelExpressionParser {
+
 }
 
-interface EvaluationContext {
-    
+interface Expression {
+    Object getValue();
 }
-class StandardEvaluationContext {
+class SpelExpression {
+    private SpelNodeImpl ast;
+}
+class SpelNodeImpl {
+    protected SpelNodeImpl[] children;
+
+    Object getValue(ExpressionState expressionState)
+    abstract TypedValue getValueInternal(ExpressionState expressionState)
 }
 
-ExpressionParser <|.. SpelExpressionParser
+ExpressionParser <|.. TemplateAwareExpressionParser
+TemplateAwareExpressionParser <|-- InternalSpelExpressionParser
+TemplateAwareExpressionParser <|-- SpelExpressionParser
+Expression <|.. SpelExpression
+
+SpelExpressionParser .. InternalSpelExpressionParser
+SpelExpressionParser .. SpelExpression
+SpelExpression --> SpelNodeImpl
 @enduml
 --
 
+===== 说明
+
+[source,txt]
+----
+1. SpelExpressionParser使用TemplateAwareExpressionParser.doParseExpression解析表达式，生成SpelExpression对象
+2. SpelExpression持有SpelNodeImpl用于表达式取值
+----
+
+==== 取值
+
+[plantuml,spring-framework-expression-value.png]
+--
+@startuml
+class SpelNodeImpl {
+    protected SpelNodeImpl[] children;
+
+    Object getValue(ExpressionState expressionState)
+    abstract TypedValue getValueInternal(ExpressionState expressionState)
+}
+
+class CompoundExpression {
+}
+class VariableReference {
+}
+class PropertyOrFieldReference {
+}
+
+SpelNodeImpl <|-- CompoundExpression
+SpelNodeImpl <|-- VariableReference
+SpelNodeImpl <|-- PropertyOrFieldReference
+@enduml
+--
+
+===== 说明
+
+[source,txt]
+----
+1. SpelNodeImpl有很多实现，其中PropertyOrFieldReference最关键
+2. PropertyOrFieldReference可以组合PropertyAccessor使用
+----
+
+==== 自定义解析器
+
+[plantuml,spring-framework-expression-propertyaccessor.png]
+--
+@startuml
+interface PropertyAccessor {
+    Class<?>[] getSpecificTargetClasses();
+    
+    TypedValue read(EvaluationContext context, Object target, String name);
+}
+class ReflectivePropertyAccessor {
+}
+class JsonPropertyAccessor {
+}
+
+PropertyAccessor <|-- ReflectivePropertyAccessor
+PropertyAccessor <|-- JsonPropertyAccessor
+@enduml
+--
+
+===== 说明
+
+[source,txt]
+----
+1. PropertyAccessor#getSpecificTargetClasses可以指定处理哪些Class
+2. ReflectivePropertyAccessor 为默认实现，通过反射取值
+3. JsonPropertyAccessor通过ObjectMapper取值，包路径：org.springframework.integration.json
+----
+
 == spring-core
 
-=== ResolvableType
+=== TypeDescriptor&ResolvableType
 
 ==== 基础
 
@@ -156,8 +269,24 @@ Type <|.. Class
 [plantuml,spring-framework-core-resolvabletype.png]
 --
 @startuml
-class ResolvableType {
+class TypeDescriptor {
+    private final Class<?> type;
+	private final ResolvableType resolvableType;
+	private final AnnotatedElementAdapter annotatedElement;
 }
+class ResolvableType {
+    private final Type type;
+    private Class<?> resolved;
+}
+
+TypeDescriptor --> ResolvableType
 @enduml
 --
 
+===== 说明
+
+[source,txt]
+----
+1. ResolvableType是对Class的封装，支持访问其父类、泛型
+2. TypeDescriptor依赖了ResolvableType，多了注解的能力
+----
