@@ -290,3 +290,130 @@ TypeDescriptor --> ResolvableType
 1. ResolvableType是对Class的封装，支持访问其父类、泛型
 2. TypeDescriptor依赖了ResolvableType，多了注解的能力
 ----
+
+== spring-context
+
+=== BeanFactory
+
+[plantuml,spring-framework-application-bean-factory.png]
+--
+interface BeanFactory {
+    T getBean(String name, Class<T> requiredType);
+}
+
+interface HierarchicalBeanFactory {
+}
+interface SingletonBeanRegistry {
+}
+
+interface ConfigurableBeanFactory {
+    void setConversionService(ConversionService conversionService);
+    ConversionService getConversionService();
+    void setTypeConverter(TypeConverter typeConverter);
+    TypeConverter getTypeConverter();
+    void addBeanPostProcessor(BeanPostProcessor beanPostProcessor);
+    void registerScope(String scopeName, Scope scope);
+    BeanDefinition getMergedBeanDefinition(String beanName);
+}
+
+interface ListableBeanFactory {
+    Map<String, T> getBeansOfType(Class<T> type);
+    Map<String, Object> getBeansWithAnnotation(Class<? extends Annotation> annotationType)
+}
+interface HierarchicalBeanFactory {
+    BeanFactory getParentBeanFactory();
+    boolean containsLocalBean(String name);
+}
+interface AutowireCapableBeanFactory {
+    void autowireBean(Object existingBean);
+    Object autowire(Class<?> beanClass, int autowireMode, boolean dependencyCheck);
+    Object resolveDependency(DependencyDescriptor descriptor, String requestingBeanName)
+}
+interface ConfigurableListableBeanFactory {
+
+}
+
+BeanFactory <|-- HierarchicalBeanFactory
+
+HierarchicalBeanFactory <|-- ConfigurableBeanFactory
+SingletonBeanRegistry <|-- ConfigurableBeanFactory
+
+ConfigurableBeanFactory <|-- ConfigurableListableBeanFactory
+ListableBeanFactory <|-- ConfigurableListableBeanFactory
+AutowireCapableBeanFactory <|-- ConfigurableListableBeanFactory
+BeanFactory <|-- ListableBeanFactory
+
+BeanFactory <|-- AutowireCapableBeanFactory
+--
+
+=== ApplicationContext
+
+[plantuml,spring-framework-application-context.png]
+--
+@startuml
+interface ResourceLoader {
+    Resource getResource(String location);
+    ClassLoader getClassLoader();
+}
+class DefaultResourceLoader {
+    private Set<ProtocolResolver> protocolResolvers;
+}
+
+interface BeanFactory {
+}
+interface ListableBeanFactory {
+}
+interface HierarchicalBeanFactory {
+}
+interface ApplicationContext {
+    AutowireCapableBeanFactory getAutowireCapableBeanFactory();
+}
+interface Lifecycle {
+}
+interface Closeable {
+}
+interface ConfigurableApplicationContext {
+    void addBeanFactoryPostProcessor(BeanFactoryPostProcessor postProcessor);
+    void addApplicationListener(ApplicationListener<?> listener);
+    void addProtocolResolver(ProtocolResolver resolver);
+}
+abstract class AbstractApplicationContext {
+    private ApplicationContext parent;
+}
+
+interface BeanDefinitionRegistry {
+    void registerBeanDefinition(String beanName, BeanDefinition beanDefinition);
+}
+class GenericApplicationContext {
+    private DefaultListableBeanFactory beanFactory;
+    ConfigurableListableBeanFactory getBeanFactory();
+}
+
+interface AnnotationConfigRegistry {
+    void register(Class<?>... componentClasses);
+    void scan(String... basePackages);
+}
+class AnnotationConfigApplicationContext {
+    private AnnotatedBeanDefinitionReader reader;
+    private ClassPathBeanDefinitionScanner scanner;
+}
+
+ResourceLoader <|.. DefaultResourceLoader
+
+DefaultResourceLoader <|-- AbstractApplicationContext
+ConfigurableApplicationContext <|.. AbstractApplicationContext
+ApplicationContext <|-- ConfigurableApplicationContext
+Lifecycle <|-- ConfigurableApplicationContext
+Closeable <|-- ConfigurableApplicationContext
+BeanFactory <|-- ListableBeanFactory
+BeanFactory <|-- HierarchicalBeanFactory
+ListableBeanFactory <|-- ApplicationContext
+HierarchicalBeanFactory <|-- ApplicationContext
+
+AbstractApplicationContext <|-- GenericApplicationContext
+BeanDefinitionRegistry <|.. GenericApplicationContext
+
+GenericApplicationContext <|-- AnnotationConfigApplicationContext
+AnnotationConfigRegistry <|.. AnnotationConfigApplicationContext
+@enduml
+--
