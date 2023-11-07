@@ -1,0 +1,35 @@
+=== BeanFactoryPostProcessor
+
+==== 类图
+
+[plantuml,spring-framework-beans-beanfactorypostprocessor.png]
+--
+@startuml
+interface BeanFactoryPostProcessor {
+    void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory);
+}
+interface BeanDefinitionRegistryPostProcessor {
+    postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry);
+}
+
+BeanFactoryPostProcessor <|-- BeanDefinitionRegistryPostProcessor
+@enduml
+--
+
+==== 执行顺序
+
+. 多个BeanFactoryPostProcessor的相同方法，执行顺序按照 PriorityOrdered -> Ordered -> 
+. BeanDefinitionRegistryPostProcessor#postProcessBeanDefinitionRegistry
+.. 执行顺序：
+. BeanFactoryPostProcessor#postProcessBeanFactory
+
+=== BeanPostProcessor
+
+==== 类图
+
+[plantuml,spring-framework-beans-beanpostprocessor.png]
+--
+@startuml
+
+@enduml
+--

@@ -112,7 +112,7 @@ EvaluationContext <|.. StandardEvaluationContext
 
 ===== 核心类图
 
-[plantuml,spring-framework-expression-parse.png]
+[plantuml,spring-framework-expression-parser.png]
 --
 @startuml
 interface ExpressionParser {
@@ -291,11 +291,17 @@ TypeDescriptor --> ResolvableType
 2. TypeDescriptor依赖了ResolvableType，多了注解的能力
 ----
 
+== spring-beans
+
+=== BeanFactoryPostProcessor
+
+=== BeanPostProcessor
+
 == spring-context
 
 === BeanFactory
 
-[plantuml,spring-framework-application-bean-factory.png]
+[plantuml,spring-framework-context-beanfactory.png]
 --
 interface BeanFactory {
     T getBean(String name, Class<T> requiredType);
@@ -348,7 +354,7 @@ BeanFactory <|-- AutowireCapableBeanFactory
 
 === ApplicationContext
 
-[plantuml,spring-framework-application-context.png]
+[plantuml,spring-framework-context-applicationcontext.png]
 --
 @startuml
 interface ResourceLoader {
