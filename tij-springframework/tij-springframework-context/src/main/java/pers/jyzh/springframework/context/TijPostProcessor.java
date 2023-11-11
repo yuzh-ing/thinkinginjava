@@ -15,6 +15,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 public class TijPostProcessor {
   public static void main(String[] args) {
     AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
+    ctx.register(TijPostProcessor.class);
     ctx.addBeanFactoryPostProcessor(CustomBeanFactoryPostProcessor.INSTANCE);
     ctx.getBeanFactory().addBeanPostProcessor(CustomBeanPostProcessor.INSTANCE);
     ctx.refresh();

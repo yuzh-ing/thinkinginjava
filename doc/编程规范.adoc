@@ -32,15 +32,7 @@ regular...：常规的...
 ----
 deduceFrom...：从...推断
 
+introspect: 內省，常指通过反射取值
+    eg: AnnotationMetadata#introspect
 ----
-
-=== BeanFactoryPostProcessor
-
-[plantuml,spring-framework-application-bean-factory.png]
---
-interface BeanFactoryPostProcessor {
-    void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory);
-}
-
-
 --
