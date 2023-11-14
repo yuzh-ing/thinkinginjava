@@ -18,6 +18,7 @@
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
+        <spirng-boot.version>2.7.17</spirng-boot.version>
     </properties>
 
 </project>

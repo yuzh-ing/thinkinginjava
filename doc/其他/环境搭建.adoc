@@ -1,0 +1,164 @@
+:stem: latexmath
+:icons: font
+:source-highlighter: coderay
+:sectnums:
+:sectlinks:
+:sectnumlevels: 4
+:toc: left
+:toc-title: 目录
+:toclevels: 3
+
+==  设置静态ip
+    
+[NOTE]
+====
+https://baijiahao.baidu.com/s?id=1659571844291911748
+====
+
+[source,shell]
+----
+# vi /etc/sysconfig/network-scripts/ifcfg-ens33
+BOOTPROTO=static
+ONBOOT=yes
+
+IPADDR=192.168.114.114
+GATEWAY=192.168.114.2
+NETMASK=255.255.255.0
+DNS1=8.8.8.8
+----
+
+==  安装docker
+
+[source,shell]
+----
+# 卸载老版本
+yum remove docker \
+   docker-client \
+   docker-client-latest \
+   docker-common \
+   docker-latest \
+   docker-latest-logrotate \
+   docker-logrotate \
+   docker-selinux \
+   docker-engine-selinux \
+   docker-engine \
+   docker-ce
+# 安装yum
+yum install -y yum-utils \
+   device-mapper-persistent-data \
+   lvm2 --skip-broken
+# 设置镜像源
+yum-config-manager --add-repo https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
+# 将docker-ce.repo中所有的 "download.docker.com" 替换成 "mirrors.aliyun.com/docker-ce"
+sed -i 's/download.docker.com/mirrors.aliyun.com/docker-ce/g' /etc/yum.repos.d/docker-ce.repo
+# 建立元数据缓存
+yum makecache fast
+# 关闭防火墙
+systemctl stop firewalld
+
+yum install -y docker-ce
+
+# 启动docker服务
+systemctl start docker
+    # 停止docker服务
+    systemctl stop docker
+    # 重启docker服务
+    systemctl restart docker
+# 设置docker开机自启
+chkconfig docker on
+
+# 查看docker版本
+docker -v
+
+# 修改docker镜像地址
+mkdir -p /etc/docker
+# 在文件夹内新建一个daemon.json文件，并写入镜像配置
+tee /etc/docker/daemon.json <<-'EOF'
+{
+  "registry-mirrors": ["https://akchsmlh.mirror.aliyuncs.com"]
+}
+EOF
+# 重新加载文件
+systemctl daemon-reload
+# 重启docker
+systemctl restart docker
+----
+
+=== 常用命令
+
+[source,shell]
+----
+# 查看docker的版本信息
+docker version
+# 查看docker的系统信息
+docker info
+ 
+# 拉取镜像
+docker pull 镜像名
+# 保存镜像
+docker save 镜像名/镜像ID -o 镜像保存的名字
+# 加载镜像
+docker load -i 镜像保存文件位置
+ 
+# 查看当前已有镜像
+docker images
+# 删除指定镜像
+docker rmi 镜像id/镜像名
+docker rmi -f 镜像id/镜像名
+# 删除指定容器
+docker rm 容器id
+# 删除所有容器
+docker rm $(docker ps -aq)
+# 删除所有无用(停止)的容器
+docker container prune
+# 删除所有无用(停止)的镜像
+docker image prune
+# 交互式进入容器对象
+docker exec -it 容器id /bin/bash
+# 查看容器内部信息
+docker logs 容器id
+# 重启/启动容器
+docker restart 容器id
+docker start 容器id
+ 
+# 查看运行镜像信息
+docker ps
+# 查看docker进程
+docker ps -a
+# 关闭进程
+docker stop 进程id
+# 重启进程
+docker restart 进程id
+docker start 进程id
+ 
+# 查看容器日志
+docker logs -tf --tail 容器id
+# 实时查看容器日志
+docker logs -f -t --tail 行数 容器名
+ 
+# 查看镜像元数据
+docker inspect 容器id
+# 清除无用数据卷
+docker volume prune
+----
+
+=== idea集成
+
+[NOTE]
+====
+https://www.jianshu.com/p/92359228e240
+====
+
+== 其他
+
+=== 共享目录
+    
+[NOTE]
+====
+https://zhuanlan.zhihu.com/p/650638983
+====
+
+[source,shell]
+----
+mount -t fuse.vmhgfs-fuse .host:/ /mnt/hgfs -o allow_other
+----

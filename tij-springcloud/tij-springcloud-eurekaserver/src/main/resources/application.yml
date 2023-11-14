@@ -1,0 +1,19 @@
+server:
+  port: 8761
+eureka:
+  instance:
+    hostname: 127.0.0.1
+    prefer-ip-address: true
+  server:
+    # 启用自我保护机制
+    enable-self-preservation: false
+    # 获取集群内对等服务器的实例的等待时间。单机环境建议为0
+    wait-time-in-ms-when-sync-empty: 0
+
+  client:
+    # eureka服务端不注册，不获取实例列表
+    register-with-eureka: false
+    fetch-registry: false
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+

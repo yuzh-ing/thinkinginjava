@@ -10,10 +10,42 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>tij-springcloud</artifactId>
     <packaging>pom</packaging>
+    <modules>
+        <module>tij-springcloud-eurekaserver</module>
+    </modules>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
+        <tij-dependencies.version>1.0</tij-dependencies.version>
     </properties>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>pers.jyzh</groupId>
+                <artifactId>tij-dependencies</artifactId>
+                <version>${tij-dependencies.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spirng-boot.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>
