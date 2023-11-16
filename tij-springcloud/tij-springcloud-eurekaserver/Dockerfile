@@ -6,8 +6,8 @@ ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
 
 VOLUME /tmp
 
-ADD target/tij-springcloud-eurekaserver-*.jar app.jar
+ADD target/tij-springcloud-eurekaserver-*.jar tij-springcloud-eurekaserver.jar
 
-ENTRYPOINT ["java","-jar","/app.jar"]
+ENTRYPOINT ["java","-jar","/tij-springcloud-eurekaserver.jar"]
 
 EXPOSE 8761
