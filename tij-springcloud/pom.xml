@@ -12,6 +12,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>tij-springcloud-eurekaserver</module>
+        <module>tij-springcloud-openfeign</module>
     </modules>
 
     <properties>

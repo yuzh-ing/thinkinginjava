@@ -1,0 +1,27 @@
+server:
+  port: 9000
+
+spring:
+  application:
+    name: tij-springcloud-openfeign
+
+eureka:
+  instance:
+    ip-address: 192.168.1.11
+    non-secure-port: ${server.port}
+    instance-id: ${spring.application.name}:${eureka.instance.ip-address}:${eureka.instance.non-secure-port}
+    prefer-ip-address: true
+    lease-expiration-duration-in-seconds: 30
+    lease-renewal-interval-in-seconds: 10
+  client:
+    enabled: true
+    healthcheck:
+      enabled: false
+    service-url:
+      defaultZone: http://192.168.114.114:8761/eureka/
+
+remote:
+  order:
+    server-url: https://www.baidu.com
+    app-key: key
+    app-secret: secret

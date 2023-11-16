@@ -14,7 +14,6 @@
     <modules>
         <module>tij-springboot-web</module>
         <module>tij-springboot-cache</module>
-        <module>tij-springboot-feign</module>
     </modules>
 
     <properties>
