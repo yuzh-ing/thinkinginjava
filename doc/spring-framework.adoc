@@ -228,7 +228,7 @@ PropertyAccessor <|-- JsonPropertyAccessor
 
 ==== 基础
 
-[plantuml,java-type.png]
+[plantuml,jdk-type.png]
 --
 @startuml
 interface Type {
@@ -423,3 +423,66 @@ GenericApplicationContext <|-- AnnotationConfigApplicationContext
 AnnotationConfigRegistry <|.. AnnotationConfigApplicationContext
 @enduml
 --
+
+=== MessageSource
+
+==== 基础
+
+[plantuml,jdk-resourcebundle.png]
+--
+@startuml
+class ResourceBundle {
+    
+}
+
+@enduml
+--
+
+==== 类图
+
+[plantuml,spring-framework-context-messagesource.png]
+--
+@startuml
+interface MessageSource {
+    String getMessage(String code, Object[] args, String defaultMessage, Locale locale);
+    String getMessage(String code, Object[] args, Locale locale) throws NoSuchMessageException;
+    String getMessage(MessageSourceResolvable resolvable, Locale locale) throws NoSuchMessageException;
+}
+interface HierarchicalMessageSource {
+    void setParentMessageSource(MessageSource parent);
+    MessageSource getParentMessageSource();
+}
+class MessageSourceSupport {
+    private final Map<String, Map<Locale, MessageFormat>> messageFormatsPerMessage;
+}
+
+class AbstractMessageSource {
+    private MessageSource parentMessageSource;
+    private Properties commonMessages;
+}
+class AbstractResourceBasedMessageSource {
+    private final Set<String> basenameSet;
+    private Locale defaultLocale;
+}
+
+class ResourceBundleMessageSource {
+    private final Map<String, Map<Locale, ResourceBundle>> cachedResourceBundles;
+    private final Map<ResourceBundle, Map<String, Map<Locale, MessageFormat>>> cachedBundleMessageFormats;
+}
+class ReloadableResourceBundleMessageSource {
+    
+}
+
+MessageSource <|-- HierarchicalMessageSource
+HierarchicalMessageSource <|.. AbstractMessageSource
+MessageSourceSupport <|-- AbstractMessageSource
+AbstractMessageSource <|-- AbstractResourceBasedMessageSource
+
+AbstractResourceBasedMessageSource <|-- ResourceBundleMessageSource
+AbstractResourceBasedMessageSource <|-- ReloadableResourceBundleMessageSource
+@enduml
+--
+
+==== 应用
+
+* 与SpringBoot整合使用 MessageSourceAutoConfiguration 配置类

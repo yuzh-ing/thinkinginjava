@@ -1,48 +1,62 @@
-=== BeanFactoryPostProcessor
+=== MessageSource
 
-==== 类图
+==== 基础
 
-[plantuml,spring-framework-beans-beanfactorypostprocessor.png]
+[plantuml,jdk-resourcebundle.png]
 --
 @startuml
-interface BeanFactoryPostProcessor {
-    void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory);
-}
-interface BeanDefinitionRegistryPostProcessor {
-    postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry);
+class ResourceBundle {
+    
 }
 
-BeanFactoryPostProcessor <|-- BeanDefinitionRegistryPostProcessor
 @enduml
 --
 
-==== 执行顺序
-
-. 方法执行顺序
-.. BeanDefinitionRegistryPostProcessor#postProcessBeanDefinitionRegistry
-.. BeanFactoryPostProcessor#postProcessBeanFactory
-. 同一方法执行顺序
-.. 上下文内置Processor(即AbstractApplicationContext.beanFactoryPostProcessors)
-.. 实现PriorityOrdered接口的Processor
-.. 实现Ordered接口的Processor
-.. 普通的Processor
-.. 注意：通过BeanFactoryPostProcessor的回调方法注册的BeanFactoryPostProcessor，时序可能不符合预期.
-... 参考代码：PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors
-
-=== BeanPostProcessor
-
 ==== 类图
 
-[plantuml,spring-framework-beans-beanpostprocessor.png]
+[plantuml,spring-framework-context-messagesource.png]
 --
 @startuml
-interface BeanPostProcessor {
-    default Object postProcessBeforeInitialization(Object bean, String beanName);
-    Object postProcessAfterInitialization(Object bean, String beanName);
+interface MessageSource {
+    String getMessage(String code, Object[] args, String defaultMessage, Locale locale);
+    String getMessage(String code, Object[] args, Locale locale) throws NoSuchMessageException;
+    String getMessage(MessageSourceResolvable resolvable, Locale locale) throws NoSuchMessageException;
 }
-interface MergedBeanDefinitionPostProcessor {
-    void postProcessMergedBeanDefinition(RootBeanDefinition beanDefinition, Class<?> beanType, String beanName);
-    default void resetBeanDefinition(String beanName);
+interface HierarchicalMessageSource {
+    void setParentMessageSource(MessageSource parent);
+    MessageSource getParentMessageSource();
 }
+class MessageSourceSupport {
+    private final Map<String, Map<Locale, MessageFormat>> messageFormatsPerMessage;
+}
+
+class AbstractMessageSource {
+    private MessageSource parentMessageSource;
+    private Properties commonMessages;
+}
+class AbstractResourceBasedMessageSource {
+    private final Set<String> basenameSet;
+    private Locale defaultLocale;
+}
+
+class ResourceBundleMessageSource {
+    private final Map<String, Map<Locale, ResourceBundle>> cachedResourceBundles;
+    private final Map<ResourceBundle, Map<String, Map<Locale, MessageFormat>>> cachedBundleMessageFormats;
+}
+class ReloadableResourceBundleMessageSource {
+    
+}
+
+MessageSource <|-- HierarchicalMessageSource
+HierarchicalMessageSource <|.. AbstractMessageSource
+MessageSourceSupport <|-- AbstractMessageSource
+AbstractMessageSource <|-- AbstractResourceBasedMessageSource
+
+AbstractResourceBasedMessageSource <|-- ResourceBundleMessageSource
+AbstractResourceBasedMessageSource <|-- ReloadableResourceBundleMessageSource
 @enduml
 --
+
+==== 应用
+
+* 与SpringBoot整合使用 MessageSourceAutoConfiguration 配置类
