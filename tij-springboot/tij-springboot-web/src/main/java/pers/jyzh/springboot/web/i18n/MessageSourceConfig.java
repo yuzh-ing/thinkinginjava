@@ -2,19 +2,19 @@ package pers.jyzh.springboot.web.i18n;
 
 import org.springframework.boot.autoconfigure.context.MessageSourceProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.util.StringUtils;
 
 import java.time.Duration;
 
 /**
  * @author ZhengYu
- * @version 1.0 2023/12/4 16:05
+ * @version 1.0 2023/12/5 14:15
  **/
 @Configuration(proxyBeanMethods = false)
-public class I18NConfig {
+public class MessageSourceConfig {
 
   @Bean
   @ConfigurationProperties(prefix = "spring.messages")
@@ -22,9 +22,9 @@ public class I18NConfig {
     return new MessageSourceProperties();
   }
 
-  @Bean(AbstractApplicationContext.MESSAGE_SOURCE_BEAN_NAME)
-  public DbMessageSource messageSource(MessageSourceProperties properties, I18NService i18NService) {
-    DbMessageSource messageSource = new DbMessageSource(i18NService);
+  @Bean
+  public MessageSource messageSource(MessageSourceProperties properties) {
+    SupportNoCacheMessageSource messageSource = new SupportNoCacheMessageSource();
     if (StringUtils.hasText(properties.getBasename())) {
       messageSource.setBasenames(StringUtils
         .commaDelimitedListToStringArray(StringUtils.trimAllWhitespace(properties.getBasename())));

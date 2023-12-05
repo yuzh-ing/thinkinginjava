@@ -1,3 +1,8 @@
 spring:
   profiles:
     active: dev
+  ## 国际化配置,
+  ## 1. messages，以配置的方式使用
+  ## 2. CustomResourceBundle，以类的方式使用
+  messages:
+    basename: messages, pers.jyzh.springboot.web.i18n.bundles.CustomResourceBundle
