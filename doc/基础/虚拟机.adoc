@@ -1,0 +1,56 @@
+:stem: latexmath
+:icons: font
+:source-highlighter: coderay
+:sectnums:
+:sectlinks:
+:sectnumlevels: 4
+:toc: left
+:toc-title: 目录
+:toclevels: 3
+
+== 概览
+
+[plantuml,jvm-overview.png]
+--
+@startmindmap
+
+@endmindmap
+--
+
+== 命令工具
+
+
+.命令概览
+[width="100%",options="header,footer"]
+|====================
+| 命令 | 简述 
+| jps |  
+| jhat |  
+| jinfo |  
+| jmap |  
+| jstat |  
+| jstack |  
+| jcmd |  
+| jstatd |  
+|====================
+
+=== jps
+=== jhat
+=== jinfo
+=== jmap
+=== jstat
+=== jstack
+=== jcmd
+=== jstatd
+
+
+== 可视化工具
+
+=== visualVM
+
+https://visualvm.github.io/index.html
+
+=== jconsole
+
+
+

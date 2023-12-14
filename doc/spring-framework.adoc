@@ -470,7 +470,7 @@ class ResourceBundleMessageSource {
     private final Map<ResourceBundle, Map<String, Map<Locale, MessageFormat>>> cachedBundleMessageFormats;
 }
 class ReloadableResourceBundleMessageSource {
-    
+    public static ResourceBundle getBundle(String baseName, Locale targetLocale, ClassLoader loader, Control control) 
 }
 
 MessageSource <|-- HierarchicalMessageSource
