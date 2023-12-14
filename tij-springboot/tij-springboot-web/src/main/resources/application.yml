@@ -6,3 +6,11 @@ spring:
   ## 2. CustomResourceBundle，以类的方式使用
   messages:
     basename: messages, pers.jyzh.springboot.web.i18n.bundles.CustomResourceBundle
+
+tij:
+  config:
+    k1: v1
+    k2:
+      - v21
+      - v22
+      - v33

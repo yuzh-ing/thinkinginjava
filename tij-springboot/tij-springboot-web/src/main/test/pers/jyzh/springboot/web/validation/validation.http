@@ -3,5 +3,7 @@ POST http://127.0.0.1:8080/v1/validation
 Content-Type: application/json
 
 {
-  "strNotBlank": "中国"
+  "strNotBlank": {
+    "k": "v"
+  }
 }
