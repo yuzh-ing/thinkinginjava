@@ -432,7 +432,7 @@ AnnotationConfigRegistry <|.. AnnotationConfigApplicationContext
 --
 @startuml
 class ResourceBundle {
-    
+    public static ResourceBundle getBundle(String baseName, Locale targetLocale, ClassLoader loader, Control control);
 }
 
 @enduml
@@ -485,4 +485,4 @@ AbstractResourceBasedMessageSource <|-- ReloadableResourceBundleMessageSource
 
 ==== 应用
 
-* 与SpringBoot整合使用 MessageSourceAutoConfiguration 配置类
+* SpringBoot整合：见 MessageSourceAutoConfiguration 配置类

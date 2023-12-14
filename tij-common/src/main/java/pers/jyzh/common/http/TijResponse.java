@@ -1,9 +1,9 @@
 package pers.jyzh.common.http;
 
-import java.text.MessageFormat;
-
 import lombok.Getter;
 import lombok.Setter;
+
+import java.text.MessageFormat;
 
 /**
  * @author ZhengYu
@@ -33,6 +33,10 @@ public class TijResponse<T> {
     rsp.setSubMsg(errCode.subMsg());
     rsp.setData(data);
     return rsp;
+  }
+
+  public static <T> TijResponse<T> success() {
+    return of(ErrorCodes.SUCCESS, null);
   }
 
   public static <T> TijResponse<T> success(T data) {
