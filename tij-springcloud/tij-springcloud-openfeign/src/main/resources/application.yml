@@ -25,3 +25,7 @@ remote:
     server-url: https://www.baidu.com
     app-key: key
     app-secret: secret
+
+logging:
+  level:
+    pers.jyzh.springcloud.openfeign.remote: debug
