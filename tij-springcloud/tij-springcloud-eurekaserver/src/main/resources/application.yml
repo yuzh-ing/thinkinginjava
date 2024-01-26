@@ -1,5 +1,9 @@
 server:
   port: 8761
+
+spring:
+  application:
+    name: tij-springcloud-eurekaserver
 eureka:
   instance:
     hostname: 127.0.0.1
@@ -17,3 +21,13 @@ eureka:
     service-url:
       defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
 
+management:
+  server:
+    port: 8443
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  metrics:
+    tags:
+      application: ${spring.application.name}
