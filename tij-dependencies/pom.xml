@@ -10,7 +10,7 @@
     <packaging>pom</packaging>
 
     <properties>
-        <spirng-boot.version>2.7.17</spirng-boot.version>
+        <spirng-boot.version>2.5.15</spirng-boot.version>
         <spring-cloud.version>2021.0.8</spring-cloud.version>
     </properties>
 

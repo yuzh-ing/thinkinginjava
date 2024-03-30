@@ -13,6 +13,7 @@
         <module>tij-springboot</module>
         <module>tij-springcloud</module>
         <module>tij-springframework</module>
+        <module>tij-springsecurity</module>
     </modules>
 
     <properties>
